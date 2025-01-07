@@ -25,9 +25,6 @@ spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
     private String gender; -- Giới Tính
     private String bio; -- Bio
     private String profilePicture; -- Avatar
-    private String province; -- Tỉnh
-    private String district; -- Quận
-    private String ward; -- Huyện
     private int followersCount; -- Số lượng người theo dõi.
     private int followingCount; -- Số lượng người mà người dùng theo dõi.
     private int postsCount; -- Số bài đăng.
@@ -38,7 +35,15 @@ spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
 
 ### Google Cloud - Config
 ```
-spirng.sercurity.oauth2.client.registration.google.client-id=YOUR_GOOGLE_CLIENT_ID
-spirng.sercurity.oauth2.client.registration.google.client-secret=YOUR_GOOGLE_CLIENT_SECRET
-spirng.sercurity.oauth2.client.registration.google.scope=profile,email
+spring.security.oauth2.client.registration.google.client-id=${GOOGLE_CLIENT_ID}
+spring.security.oauth2.client.registration.google.client-secret=${GOOGLE_CLIENT_SECRET}
+spring.security.oauth2.client.registration.google.redirect-uri=http://localhost:8080/login/oauth2/code/google
+
+spring.security.oauth2.client.registration.google.scope=openid,profile,email,https://www.googleapis.com/auth/user.birthday.read,https://www.googleapis.com/auth/user.addresses.read,https://www.googleapis.com/auth/user.phonenumbers.read
+
+spring.security.oauth2.client.provider.google.authorization-uri=https://accounts.google.com/o/oauth2/auth
+spring.security.oauth2.client.provider.google.token-uri=https://oauth2.googleapis.com/token
+spring.security.oauth2.client.provider.google.user-info-uri=https://www.googleapis.com/oauth2/v3/userinfo
+spring.security.oauth2.client.provider.google.user-name-attribute=sub
+
 ```
