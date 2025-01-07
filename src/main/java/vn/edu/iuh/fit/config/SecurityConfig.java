@@ -17,11 +17,15 @@ public class SecurityConfig {
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/", "/favicon.ico").permitAll();
-                    auth.anyRequest().authenticated();
+                    auth.requestMatchers( "/").permitAll(); // Cho phép các URL công khai
+                    auth.anyRequest().authenticated(); // Các yêu cầu khác cần xác thực
                 })
-                .oauth2Login(withDefaults())
-                .formLogin(withDefaults())
+//                .oauth2Login(withDefaults()) // Cấu hình OAuth2 Login
+                .oauth2Login(oauth2 -> oauth2
+                        .defaultSuccessUrl("/api/auth/admin", true) // Chuyển hướng đến /admin sau khi đăng nhập thành công
+//                        .failureUrl("/api/auth/home") // URL chuyển hướng nếu đăng nhập thất bại
+                )
+                .formLogin(withDefaults()) // Cấu hình Form Login
                 .build();
     }
 
