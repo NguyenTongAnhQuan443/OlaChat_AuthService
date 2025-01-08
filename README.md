@@ -29,7 +29,6 @@ spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
     private int followingCount; -- Số lượng người mà người dùng theo dõi.
     private int postsCount; -- Số bài đăng.
     private LocalDateTime createdAt; -- Thời gian tạo tài khoản.
-    private LocalDateTime updatedAt; -- Thời gian cập nhật thông tin lần cuối.
     private LocalDateTime lastLogin; -- Thời gian đăng nhập lần cuối.
 ```
 
@@ -47,3 +46,4 @@ spring.security.oauth2.client.provider.google.user-info-uri=https://www.googleap
 spring.security.oauth2.client.provider.google.user-name-attribute=sub
 
 ```
+

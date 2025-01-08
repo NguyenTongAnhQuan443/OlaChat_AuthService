@@ -40,7 +40,6 @@ public class User {
     private int postsCount;
 
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
     private LocalDateTime lastLogin;
 
     private String accessToken;
@@ -171,13 +170,5 @@ public class User {
 
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }

@@ -11,6 +11,7 @@ import vn.edu.iuh.fit.service.UserService;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -24,7 +25,8 @@ public class AuthController {
         this.authorizedClientService = authorizedClientService;
     }
 
-    @GetMapping("/admin")
+    //    Login with google
+    @GetMapping("/login-success")
     public ResponseEntity<Map<String, Object>> admin(OAuth2AuthenticationToken authentication) {
         Map<String, Object> response = new HashMap<>();
         try {
@@ -59,6 +61,86 @@ public class AuthController {
             response.put("data", new HashMap<>());
 
             return ResponseEntity.status(401).body(response);
+        }
+    }
+
+    //    create user with email
+    @PostMapping("/register")
+    public ResponseEntity<Map<String, Object>> register(@RequestBody User user) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            User dbUser = userService.createUser(user);
+            response.put("code", "1");
+            response.put("message", "Register successful");
+            response.put("data", dbUser);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("code", "0");
+            response.put("message", "Register failed");
+            response.put("data", new HashMap<>());
+            return ResponseEntity.status(400).body(response);
+        }
+    }
+
+    //    Login with email
+    @PostMapping("/login-email")
+    public ResponseEntity<Map<String, Object>> login(@RequestBody User user) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            User dbUser = userService.loginUser(user.getEmail(), user.getPassword());
+            if (dbUser != null) {
+                response.put("code", "1");
+                response.put("message", "Login successful");
+                response.put("data", dbUser);
+                return ResponseEntity.ok(response);
+            } else {
+                response.put("code", "0");
+                response.put("message", "Invalid email or password");
+                response.put("data", new HashMap<>());
+                return ResponseEntity.status(401).body(response);
+            }
+        } catch (Exception e) {
+            response.put("code", "0");
+            response.put("message", "Login failed");
+            response.put("data", new HashMap<>());
+            return ResponseEntity.status(400).body(response);
+        }
+    }
+
+    //    Update user
+    @PutMapping("/update")
+    public ResponseEntity<Map<String, Object>> update(@RequestBody User user) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            User dbUser = userService.updateUser(user);
+            response.put("code", "1");
+            response.put("message", "Update successful");
+            response.put("data", dbUser);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("code", "0");
+            response.put("message", "Update failed");
+            response.put("data", new HashMap<>());
+            return ResponseEntity.status(400).body(response);
+        }
+    }
+
+    //    Get postCount for user
+    @GetMapping("/post-count/{email}")
+    public ResponseEntity<Map<String, Object>> getPostsCount(@PathVariable String email) {
+
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Optional<User> user = userService.findByEmail(email);
+            response.put("code", "1");
+            response.put("message", "Get post count successful");
+            response.put("postsCount", user.get().getPostsCount());
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("code", "0");
+            response.put("message", "Get post count failed");
+            response.put("data", new HashMap<>());
+            return ResponseEntity.status(400).body(response);
         }
     }
 }
